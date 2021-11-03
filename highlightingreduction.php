@@ -59,9 +59,12 @@ class Highlightingreduction extends Module
      */
     public function install()
     {
+        //page with all product with a reduction
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_OWN_PAGE', false);
+        //display on this hook
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_HOME', false);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_FOOTER', false);
+        //add a countdown on product category 
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_COUNTDOWN', false);
 
         return parent::install() &&
@@ -82,18 +85,7 @@ class Highlightingreduction extends Module
      */
     public function getContent()
     {
-        /**
-         * If values have been submitted in the form, process.
-         */
-        if (((bool)Tools::isSubmit('submitHighlightingreductionModule')) == true) {
-            $this->postProcess();
-        }
-
-        $this->context->smarty->assign('module_dir', $this->_path);
-
-        $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
-
-        return $output.$this->renderForm();
+        return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
     }
 
     /**

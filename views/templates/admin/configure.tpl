@@ -23,26 +23,36 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-<div class="panel">
-	<h3><i class="icon icon-credit-card"></i> {l s='Display your flash discounts and reductions' mod='highlightingreduction'}</h3>
-	<p>
-		<strong>{l s='Here is my new generic module!' mod='highlightingreduction'}</strong><br />
-		{l s='Thanks to PrestaShop, now I have a great module.' mod='highlightingreduction'}<br />
-		{l s='I can configure it using the following configuration form.' mod='highlightingreduction'}
-	</p>
-	<br />
-	<p>
-		{l s='This module will boost your sales!' mod='highlightingreduction'}
-	</p>
+<div class="bootstrap">
+    <div class="page-head custom-tab">
+        <div class="page-head-tabs" id="head_tabs">
+            <ul class="nav">
+                <li class="active">
+                    <a href="#slider_configure" data-toggle="tab">{l s='SLIDER CONFIGURE' mod='productpricebrand'}</a>
+                </li>
+                <li >
+                    <a href="#product_list_configure" data-toggle="tab">{l s='PRODUCT LIST' mod='productpricebrand'}</a>
+                </li>
+               
+            </ul>
+        </div>
+    </div>
 </div>
-
-<div class="panel">
-	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='highlightingreduction'}</h3>
-	<p>
-		&raquo; {l s='You can get a PDF documentation to configure this module' mod='highlightingreduction'} :
-		<ul>
-			<li><a href="#" target="_blank">{l s='English' mod='highlightingreduction'}</a></li>
-			<li><a href="#" target="_blank">{l s='French' mod='highlightingreduction'}</a></li>
-		</ul>
-	</p>
+<div class="bootstrap">
+    <!-- Module content -->
+    <div id="modulecontent" class="clearfix">
+        <!-- Tab panes -->
+        <div class="tab-content row">
+            <div class="tab-pane active" id="slider_configure">
+                <div class="tab_cap_listing">
+                    {include file="./tabs/slider.tpl"}
+                </div>
+            </div>
+            <div class="tab-pane" id="product_list_configure">
+                <div class="tab_cap_listing">
+                    {include file="./tabs/product_list.tpl"}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
