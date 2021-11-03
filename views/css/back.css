@@ -25,3 +25,20 @@
 * Don't forget to prefix your containers with your own identifier
 * to avoid any conflicts with others containers.
 */
+
+#content.bootstrap .page-head.custom-tab {
+    height: auto !important;
+    top: 8rem !important;
+}
+.bootstrap .page-head .page-head-tabs ul.nav li.active {
+    border-bottom: 3px solid #25b9d7;
+    border-bottom: .1875rem solid #25b9d7;
+    background: #f3f9fb;
+    color: #000000;
+}
+.raio{
+    top:-10px;
+}
+.short-select{
+    width: 200px !important;
+}

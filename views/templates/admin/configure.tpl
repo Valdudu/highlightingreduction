@@ -28,6 +28,9 @@
         <div class="page-head-tabs" id="head_tabs">
             <ul class="nav">
                 <li class="active">
+                    <a href="#general" data-toggle="tab">{l s='GENERAL CONFIGURATION' mod='productpricebrand'}</a>
+                </li>
+				<li >
                     <a href="#slider_configure" data-toggle="tab">{l s='SLIDER CONFIGURE' mod='productpricebrand'}</a>
                 </li>
                 <li >
@@ -43,7 +46,12 @@
     <div id="modulecontent" class="clearfix">
         <!-- Tab panes -->
         <div class="tab-content row">
-            <div class="tab-pane active" id="slider_configure">
+            <div class="tab-pane active" id="general">
+                <div class="tab_cap_listing">
+                    {include file="./tabs/general.tpl"}
+                </div>
+            </div>            
+			<div class="tab-pane" id="slider_configure">
                 <div class="tab_cap_listing">
                     {include file="./tabs/slider.tpl"}
                 </div>
