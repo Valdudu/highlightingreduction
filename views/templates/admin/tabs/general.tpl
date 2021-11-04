@@ -39,22 +39,23 @@
                 </label>
                 <div class="col-lg-9 pspc-themes-wrp themes-wrp-17">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-1-simple" value="1" data-theme="1-simple" checked="checked"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-2-dark" value="2" data-theme="2-dark"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-1-simple" value="0" data-theme="1-simple" {if $object==0}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-2-dark" value="1" data-theme="2-dark" {if $object==1}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                     {l s='Display a countdown on product page' mod='productpricebrand'}
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_on" value="1" checked="checked">
+                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_on" value="1" {if $product_page==1}checked="checked"{/if}>
                         <label for="ACTIVATE_PRODUCT_PAGE_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_off" value="0">
+                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_off" value="0" {if $product_page==0}checked="checked"{/if}>
                         <label for="ACTIVATE_PRODUCT_PAGE_off">
                             Non
                         </label>
@@ -62,14 +63,15 @@
                     </span>
                 </div> 
             </div>
+            
             <div class="form-group select_product_position" style="visibility:hidden;">
                 <label class="control-label col-lg-3">
                     {l s='Position on product page' mod='productpricebrand'}
                 </label>
                 <div class="col-lg-9">
                     <select name="PRODUCT_PAGE_POSITION" class="short-select">
-						<option value="0">{l s='Under the price' mod=''}</option>
-                        <option value="1">{l s='Under the buttons' mod=''}</option>																																																	
+						<option value="0" {if $product_page_position==0}selected{/if}>{l s='Under the price' mod=''}</option>
+                        <option value="1"{if $product_page_position==1}selected{/if}>{l s='Under the buttons' mod=''}</option>																																																	
                     </select>                    
                 </div> 
             </div>
@@ -80,11 +82,11 @@
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_on" value="1" checked="checked">
+                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_on" value="1" {if $category_page==1}checked="checked"{/if}>
                         <label for="ACTIVATE_CAETGORY_LIST_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_off" value="0">
+                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_off" value="0" {if $category_page==0}checked="checked"{/if}>
                         <label for="ACTIVATE_CAETGORY_LIST_off">
                             Non
                         </label>

@@ -11,11 +11,11 @@
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_on" value="1" checked="checked">
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_on" value="1" {if $slider_activate==1}checked="checked"{/if}>
                         <label for="ACTIVATE_SLIDE_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_off" value="0">
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_off" value="0"{if $slider_activate==0}checked="checked"{/if}>
                         <label for="ACTIVATE_SLIDE_off">
                             Non
                         </label>
@@ -30,8 +30,8 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="PRODUCT_SLIDER_POSITION" class="short-select">
-						<option value="0">{l s='Home Page' mod=''}</option>
-                        <option value="1">{l s='Footer' mod=''}</option>																																																	
+						<option value="0" {if $slider_hook_position==0}selected{/if}>{l s='Home Page' mod=''}</option>
+                        <option value="1" {if $slider_hook_position==1}selected{/if}>{l s='Footer' mod=''}</option>																																																	
                     </select>                    
                 </div>
             </div>
@@ -41,8 +41,8 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="PRODUCT_PER_ROW" class="short-select">
-						<option value="0">3</option>
-                        <option value="1">4</option>																																																	
+						<option value="0" {if $slider_product_per_row==0}selected{/if}>3</option>
+                        <option value="1" {if $slider_product_per_row==1}selected{/if}>4</option>																																																	
                     </select>                    
                 </div>
             </div>
@@ -53,11 +53,12 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="ROW_NUMBER" class="short-select">
-						<option value="0">1</option>
-                        <option value="1">2</option>																																																	
+						<option value="0" {if $slider_product_row==0}selected{/if}>1</option>
+                        <option value="1" {if $slider_product_row==1}selected{/if}>2</option>																																																	
                     </select>                    
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                     <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" 
@@ -66,9 +67,10 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="0" type="number" class="form-control short-select" required="required">               
+                    <input value="{$slider_number_to_display}" type="number" class="form-control short-select" required="required">               
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                     <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" 
@@ -77,7 +79,7 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="0" type="number" class="form-control short-select" required="required">               
+                    <input value="{$slider_discount_end}" type="number" class="form-control short-select" required="required">               
                 </div>
             </div>
         </div>

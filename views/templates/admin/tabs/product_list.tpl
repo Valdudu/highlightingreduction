@@ -5,17 +5,18 @@
     </div>
     <form method="post" class="form-horizontal">
         <div class="card">
+
             <div class="form-group">
                 <label class="col-lg-3 control-label">
-                    {l s='Maximum number of product to display:' mod='productpricebrand'}
+                    {l s='Activate:' mod='productpricebrand'}
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_DISCOUNT_PAGE" id="ACTIVATE_DISCOUNT_PAGE_on" value="1" checked="checked">
+                        <input type="radio" name="ACTIVATE_DISCOUNT_PAGE" id="ACTIVATE_DISCOUNT_PAGE_on" value="1" {if $page_activate==1}checked="checked"{/if}>
                         <label for="ACTIVATE_DISCOUNT_PAGE_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_DISCOUNT_PAGE" id="ACTIVATE_DISCOUNT_PAGE_off" value="0">
+                        <input type="radio" name="ACTIVATE_DISCOUNT_PAGE" id="ACTIVATE_DISCOUNT_PAGE_off" value="0" {if $page_activate==0}checked="checked"{/if}>
                         <label for="ACTIVATE_DISCOUNT_PAGE_off">
                             Non
                         </label>
@@ -32,7 +33,7 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="0" type="number" class="form-control short-select" required="required">               
+                    <input value="{$page_discount_end}" type="number" class="form-control short-select" required="required">               
                 </div>
             </div>
         </div>

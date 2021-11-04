@@ -70,13 +70,13 @@ class Highlightingreduction extends Module
         //page with all product with a reduction
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', 0);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', 1);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', 0);
         
         /**PRODUCT LIST TAB DATA**/
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_DISCOUNT', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', 0);
 
         return parent::install() &&
@@ -100,7 +100,7 @@ class Highlightingreduction extends Module
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_HOURS');
         
         /**PRODUCT LIST TAB DATA**/
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_DISCOUNT');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE');
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS');
         return parent::uninstall();
     }
@@ -115,6 +115,22 @@ class Highlightingreduction extends Module
         }
         $this->context->controller->addCSS($this->_path.'views/css/back.css');
         $this->context->controller->addJS($this->_path.'views/js/back.js');
+        $this->context->smarty->assign([
+            'object' =>Configuration::get('HIGHLIGHTINGREDUCTION_OBJECT'),
+            'product_page' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE'),
+            'product_page_position' =>Configuration::get('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION'),
+            'category_page' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE'),
+            'slider_activate' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER'),
+            'slider_hook_position' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION'),
+            'slider_product_per_row' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW'),
+            'slider_product_row' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW'),
+            'slider_number_to_display' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER'),
+            'slider_discount_end' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOURS'),
+            'page_activate' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE'),
+            'page_discount_end' =>Configuration::get('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS'),
+            
+        ]);
+
         return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
     }
 
