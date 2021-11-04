@@ -11,24 +11,25 @@
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_ALL_SPECIAL" id="ACTIVATE_SLIDE_on" value="1" checked="checked">
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_on" value="1" checked="checked">
                         <label for="ACTIVATE_SLIDE_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_ALL_SPECIAL" id="ACTIVATE_SLIDE_off" value="0">
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_off" value="0">
                         <label for="ACTIVATE_SLIDE_off">
                             Non
                         </label>
                         <a class="slide-button btn"></a>
                     </span>
-                </div>                
+                </div>                              
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                 	{l s='Choose where to display :' mod='productpricebrand'}
                 </label>
                 <div class="col-lg-9">
-                    <select name="PRODUCT_POSITION" class="short-select">
+                    <select name="PRODUCT_SLIDER_POSITION" class="short-select">
 						<option value="0">{l s='Home Page' mod=''}</option>
                         <option value="1">{l s='Footer' mod=''}</option>																																																	
                     </select>                    
@@ -40,19 +41,20 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="PRODUCT_PER_ROW" class="short-select">
-						<option value="3">3</option>
-                        <option value="4">4</option>																																																	
+						<option value="0">3</option>
+                        <option value="1">4</option>																																																	
                     </select>                    
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                 	<span>{l s='Row number :' mod='productpricebrand'}</span>
                 </label>
                 <div class="col-lg-9">
                     <select name="ROW_NUMBER" class="short-select">
-						<option value="1">1</option>
-                        <option value="2">2</option>																																																	
+						<option value="0">1</option>
+                        <option value="1">2</option>																																																	
                     </select>                    
                 </div>
             </div>
@@ -64,7 +66,18 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="0" class="form-control short-select" required="required">               
+                    <input value="0" type="number" class="form-control short-select" required="required">               
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3">
+                    <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" 
+                        data-original-title="0 mean no limit">
+                	{l s='Show discounts that end in less than (in hours) :' mod='productpricebrand'}
+                    </span>
+                </label>
+                <div class="col-lg-9">
+                    <input value="0" type="number" class="form-control short-select" required="required">               
                 </div>
             </div>
         </div>

@@ -59,13 +59,25 @@ class Highlightingreduction extends Module
      */
     public function install()
     {
+        /**GENERAL TAB DATA**/
+        //object
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_OBJECT', 1);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE', 0);
+        
+        /**SLIDER TAB DATA**/
         //page with all product with a reduction
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_OWN_PAGE', false);
-        //display on this hook
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_HOME', false);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_FOOTER', false);
-        //add a countdown on product category 
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_COUNTDOWN', false);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', 0);
+        
+        /**PRODUCT LIST TAB DATA**/
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_DISCOUNT', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', 0);
 
         return parent::install() &&
             $this->registerHook('displayHome');
@@ -73,8 +85,23 @@ class Highlightingreduction extends Module
 
     public function uninstall()
     {
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_LIVE_MODE');
-
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_OBJECT');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE');
+        
+        /**SLIDER TAB DATA**/
+        //page with all product with a reduction
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_HOURS');
+        
+        /**PRODUCT LIST TAB DATA**/
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_DISCOUNT');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS');
         return parent::uninstall();
     }
 
@@ -83,112 +110,35 @@ class Highlightingreduction extends Module
      */
     public function getContent()
     {
+        if(Tools::isSubmit('saveconfiguration')){
+            $this->postProcessGeneral();
+        }
         $this->context->controller->addCSS($this->_path.'views/css/back.css');
+        $this->context->controller->addJS($this->_path.'views/js/back.js');
         return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
     }
 
-    /**
-     * Create the form that will be displayed in the configuration of your module.
-     */
-    protected function renderForm()
-    {
-        $helper = new HelperForm();
-
-        $helper->show_toolbar = false;
-        $helper->table = $this->table;
-        $helper->module = $this;
-        $helper->default_form_language = $this->context->language->id;
-        $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG', 0);
-
-        $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submitHighlightingreductionModule';
-        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
-            .'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
-        $helper->token = Tools::getAdminTokenLite('AdminModules');
-
-        $helper->tpl_vars = array(
-            'fields_value' => $this->getConfigFormValues(), /* Add values for your inputs */
-            'languages' => $this->context->controller->getLanguages(),
-            'id_language' => $this->context->language->id,
-        );
-
-        return $helper->generateForm(array($this->getConfigForm()));
-    }
-
-    /**
-     * Create the structure of your form.
-     */
-    protected function getConfigForm()
-    {
-        return array(
-            'form' => array(
-                'legend' => array(
-                'title' => $this->l('Settings'),
-                'icon' => 'icon-cogs',
-                ),
-                'input' => array(
-                    array(
-                        'type' => 'switch',
-                        'label' => $this->l('Live mode'),
-                        'name' => 'HIGHLIGHTINGREDUCTION_LIVE_MODE',
-                        'is_bool' => true,
-                        'desc' => $this->l('Use this module in live mode'),
-                        'values' => array(
-                            array(
-                                'id' => 'active_on',
-                                'value' => true,
-                                'label' => $this->l('Enabled')
-                            ),
-                            array(
-                                'id' => 'active_off',
-                                'value' => false,
-                                'label' => $this->l('Disabled')
-                            )
-                        ),
-                    ),
-                    array(
-                        'col' => 3,
-                        'type' => 'text',
-                        'prefix' => '<i class="icon icon-envelope"></i>',
-                        'desc' => $this->l('Enter a valid email address'),
-                        'name' => 'HIGHLIGHTINGREDUCTION_ACCOUNT_EMAIL',
-                        'label' => $this->l('Email'),
-                    ),
-                    array(
-                        'type' => 'password',
-                        'name' => 'HIGHLIGHTINGREDUCTION_ACCOUNT_PASSWORD',
-                        'label' => $this->l('Password'),
-                    ),
-                ),
-                'submit' => array(
-                    'title' => $this->l('Save'),
-                ),
-            ),
-        );
-    }
-
-    /**
-     * Set values for the inputs.
-     */
-    protected function getConfigFormValues()
-    {
-        return array(
-            'HIGHLIGHTINGREDUCTION_LIVE_MODE' => Configuration::get('HIGHLIGHTINGREDUCTION_LIVE_MODE', true),
-            'HIGHLIGHTINGREDUCTION_ACCOUNT_EMAIL' => Configuration::get('HIGHLIGHTINGREDUCTION_ACCOUNT_EMAIL', 'contact@prestashop.com'),
-            'HIGHLIGHTINGREDUCTION_ACCOUNT_PASSWORD' => Configuration::get('HIGHLIGHTINGREDUCTION_ACCOUNT_PASSWORD', null),
-        );
-    }
 
     /**
      * Save form data.
      */
-    protected function postProcess()
+    protected function postProcessGeneral()
     {
-        $form_values = $this->getConfigFormValues();
 
-        foreach (array_keys($form_values) as $key) {
-            Configuration::updateValue($key, Tools::getValue($key));
-        }
+    }
+    /**
+     * Save form data.
+     */
+    protected function postProcessSlider()
+    {
+
+    }
+    /**
+     * Save form data.
+     */
+    protected function postProcessDiscountPage()
+    {
+
     }
 
 

@@ -25,3 +25,14 @@
 * Don't forget to prefix your containers with your own identifier
 * to avoid any conflicts with others containers.
 */
+
+$(document).ready(function(){
+//$("input[name='ACTIVATE_PRODUCT_PAGE']").click(function(){
+    $("input[name='ACTIVATE_PRODUCT_PAGE']").click(function(){
+        if($("input[name='ACTIVATE_PRODUCT_PAGE']:checked").val()==1){
+            $(".select_product_position").css("visibility", "visible");            
+        }else{
+            $(".select_product_position").css("visibility", "hidden");            
+        }
+    });
+});

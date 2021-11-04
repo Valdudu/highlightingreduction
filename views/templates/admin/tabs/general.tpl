@@ -33,40 +33,66 @@
             <div class="form-group">
                 <label class="control-label col-lg-3">
                     <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" 
-                        data-original-title="Veuillez utiliser un cookie spécial si votre thème ne prend pas en charge les cookies standards OU si vous souhaitez placer un compte à rebours dans un emplacement non standard. Cf. le bloc &amp;quot;Informations supplémentaires&amp;quot;.
-												">
-																				{l s='Reduction type' mod='productpricebrand'}
-					</span>
-                </label>
-                <div class="col-lg-9" style="padding-top:7px;">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Product specific price
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                        <label class="form-check-label" for="flexCheckDefault2">
-                            Reduction
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-3">
-                    <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" 
                         data-original-title="{l s='Choose your countdown style' mod='productpricebrand'}">
 						{l s='Object' mod='productpricebrand'}
 					</span>
                 </label>
                 <div class="col-lg-9 pspc-themes-wrp themes-wrp-17">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-1-simple" value="1-simple.css" data-theme="1-simple" checked="checked"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-2-dark" value="2-dark.css" data-theme="2-dark"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-1-simple" value="1" data-theme="1-simple" checked="checked"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-2-dark" value="2" data-theme="2-dark"><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-lg-3">
+                    {l s='Display a countdown on product page' mod='productpricebrand'}
+                </label>
+                <div class="col-lg-9">
+                    <span class="switch prestashop-switch fixed-width-lg">
+                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_on" value="1" checked="checked">
+                        <label for="ACTIVATE_PRODUCT_PAGE_on">
+                            Oui
+                        </label>
+                        <input type="radio" name="ACTIVATE_PRODUCT_PAGE" id="ACTIVATE_PRODUCT_PAGE_off" value="0">
+                        <label for="ACTIVATE_PRODUCT_PAGE_off">
+                            Non
+                        </label>
+                        <a class="slide-button btn"></a>
+                    </span>
+                </div> 
+            </div>
+            <div class="form-group select_product_position" style="visibility:hidden;">
+                <label class="control-label col-lg-3">
+                    {l s='Position on product page' mod='productpricebrand'}
+                </label>
+                <div class="col-lg-9">
+                    <select name="PRODUCT_PAGE_POSITION" class="short-select">
+						<option value="0">{l s='Under the price' mod=''}</option>
+                        <option value="1">{l s='Under the buttons' mod=''}</option>																																																	
+                    </select>                    
+                </div> 
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-lg-3">
+                    {l s='Display on category page' mod='productpricebrand'}
+                </label>
+                <div class="col-lg-9">
+                    <span class="switch prestashop-switch fixed-width-lg">
+                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_on" value="1" checked="checked">
+                        <label for="ACTIVATE_CAETGORY_LIST_on">
+                            Oui
+                        </label>
+                        <input type="radio" name="ACTIVATE_CATEGORY_LIST" id="ACTIVATE_CAETGORY_LIST_off" value="0">
+                        <label for="ACTIVATE_CAETGORY_LIST_off">
+                            Non
+                        </label>
+                        <a class="slide-button btn"></a>
+                    </span>
+                </div> 
+            </div>
+
         </div>
         <div class="panel-footer"> 
 	    	<ps-panel-footer-link title="Retour" icon="icon-arrow-circle-left" fa="fa-arrow-circle-left" direction="left" href="index.php?">
