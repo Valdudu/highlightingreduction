@@ -113,6 +113,12 @@ class Highlightingreduction extends Module
         if(Tools::isSubmit('saveconfiguration')){
             $this->postProcessGeneral();
         }
+        if(Tools::isSubmit('saveslider')){
+            $this->postProcessSlider();
+        }
+        if(Tools::isSubmit('savelist')){
+            $this->postProcessDiscountPage();
+        }
         $this->context->controller->addCSS($this->_path.'views/css/back.css');
         $this->context->controller->addJS($this->_path.'views/js/back.js');
         $this->context->smarty->assign([
@@ -140,20 +146,31 @@ class Highlightingreduction extends Module
      */
     protected function postProcessGeneral()
     {
-
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_OBJECT', Tools::getValue('object_style'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE', Tools::getValue('ACTIVATE_PRODUCT_PAGE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION', Tools::getValue('PRODUCT_PAGE_POSITION'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE', Tools::getValue('ACTIVATE_CATEGORY_LIST'));
     }
     /**
      * Save form data.
      */
     protected function postProcessSlider()
     {
-
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', Tools::getValue('ACTIVATE_SLIDER'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', Tools::getValue('PRODUCT_SLIDER_POSITION'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', Tools::getValue('PRODUCT_PER_ROW'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', Tools::getValue('ROW_NUMBER'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', intval(Tools::getValue('SLIDER_MAX_PRODUCT')));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', intval(Tools::getValue('SLIDER_DISCOUNT_END')));
+        
     }
     /**
      * Save form data.
      */
     protected function postProcessDiscountPage()
     {
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE', Tools::getValue('ACTIVATE_DISCOUNT_PAGE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', intval(Tools::getValue('PAGE_DISCOUNT_END')));
 
     }
 

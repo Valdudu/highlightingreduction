@@ -39,8 +39,8 @@
                 </label>
                 <div class="col-lg-9 pspc-themes-wrp themes-wrp-17">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-1-simple" value="0" data-theme="1-simple" {if $object==0}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
-                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="THEME" id="theme-2-dark" value="1" data-theme="2-dark" {if $object==1}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="object_style" id="theme-1-simple" value="0" data-theme="1-simple" {if $object==0}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/1-simple.png" alt="1-simple"></label></div>
+                        <div class="col-lg-3 col-md-4 col-xs-6 raio"><label><input type="radio" name="object_style" id="theme-2-dark" value="1" data-theme="2-dark" {if $object==1}checked="checked"{/if}><img class="theme-img" src="/prestashop7/modules/psproductcountdown/views/img/themes/2-dark.png" alt="2-dark"></label></div>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 </div> 
             </div>
             
-            <div class="form-group select_product_position" style="visibility:hidden;">
+            <div class="form-group select_product_position" {if $product_page==0}style="visibility:hidden;"{/if}>
                 <label class="control-label col-lg-3">
                     {l s='Position on product page' mod='productpricebrand'}
                 </label>

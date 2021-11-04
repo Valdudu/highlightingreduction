@@ -33,7 +33,7 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="{$page_discount_end}" type="number" class="form-control short-select" required="required">               
+                    <input value="{$page_discount_end}" type="number" name="PAGE_DISCOUNT_END" class="form-control short-select" required="required">               
                 </div>
             </div>
         </div>

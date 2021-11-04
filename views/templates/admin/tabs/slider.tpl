@@ -35,6 +35,7 @@
                     </select>                    
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="control-label col-lg-3">
                 	{l s='Products per row :' mod='productpricebrand'}
@@ -67,7 +68,7 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="{$slider_number_to_display}" type="number" class="form-control short-select" required="required">               
+                    <input value="{$slider_number_to_display}" type="number" name="SLIDER_MAX_PRODUCT" class="form-control short-select" required="required">               
                 </div>
             </div>
 
@@ -79,7 +80,7 @@
                     </span>
                 </label>
                 <div class="col-lg-9">
-                    <input value="{$slider_discount_end}" type="number" class="form-control short-select" required="required">               
+                    <input value="{$slider_discount_end}" type="number" name="SLIDER_DISCOUNT_END" class="form-control short-select" required="required">               
                 </div>
             </div>
         </div>
