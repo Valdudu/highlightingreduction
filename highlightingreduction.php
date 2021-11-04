@@ -80,7 +80,9 @@ class Highlightingreduction extends Module
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', 0);
 
         return parent::install() &&
-            $this->registerHook('displayHome');
+            $this->registerHook('displayHome')&&
+            $this->registerHook('displayFooter')&&
+            $this->registerHook('displayFooterBefore');
     }
 
     public function uninstall()
@@ -178,5 +180,13 @@ class Highlightingreduction extends Module
     public function hookDisplayHome()
     {
         /* Place your code here. */
+    }    
+    public function hookDisplayFooter()
+    {
+        /* Place your code here. */
     }
+    public function hookDisplayFooterBefore()
+    {
+        /* Place your code here. */
+    }    
 }
