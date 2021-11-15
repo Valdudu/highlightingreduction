@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>highlightingreduction</name>
+    <displayName><![CDATA[Display your flash discounts and reductions]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Improve your sales by highlighting your discounts and flash promotions on your home page and others. Create a page displaying all your promotions]]></description>
+    <author><![CDATA[Valentin Duplan]]></author>
+    <tab><![CDATA[pricing_promotion]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

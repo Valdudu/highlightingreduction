@@ -42,8 +42,8 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="PRODUCT_PER_ROW" class="short-select">
-						<option value="0" {if $slider_product_per_row==0}selected{/if}>3</option>
-                        <option value="1" {if $slider_product_per_row==1}selected{/if}>4</option>																																																	
+						<option value="3" {if $slider_product_per_row==3}selected{/if}>3</option>
+                        <option value="4" {if $slider_product_per_row==4}selected{/if}>4</option>																																																	
                     </select>                    
                 </div>
             </div>
@@ -54,8 +54,8 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="ROW_NUMBER" class="short-select">
-						<option value="0" {if $slider_product_row==0}selected{/if}>1</option>
-                        <option value="1" {if $slider_product_row==1}selected{/if}>2</option>																																																	
+						<option value="1" {if $slider_product_row==1}selected{/if}>1</option>
+                        <option value="2" {if $slider_product_row==2}selected{/if}>2</option>																																																	
                     </select>                    
                 </div>
             </div>
