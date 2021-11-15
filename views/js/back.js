@@ -35,4 +35,5 @@ $(document).ready(function(){
             $(".select_product_position").css("visibility", "hidden");            
         }
     });
+
 });

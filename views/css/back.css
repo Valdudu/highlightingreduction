@@ -42,3 +42,9 @@
 .short-select{
     width: 200px !important;
 }
+.inline{
+    display: inline !important;
+}
+.smaller-select{
+    width: 100px !important;
+}
