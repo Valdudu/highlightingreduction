@@ -56,7 +56,6 @@
 	bottom:-50px;
 	display: block !important;
 }
-/* The dots/bullets/indicators */
 .dot {
 	cursor: pointer;
 	height: 15px;
@@ -70,4 +69,12 @@
   
   .active, .dot:hover {
 	background-color: #717171;
+  }
+  .fad {
+	animation: 1.5s ease-in 1s  reverse both running slidein;
+  }
+  
+  @keyframes slidein {
+	from { transform: scaleX(1); }
+	to   { transform: scaleX(0); }
   }
