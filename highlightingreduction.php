@@ -89,7 +89,9 @@ class Highlightingreduction extends Module
         return parent::install() &&
             $this->registerHook('displayHome')&&
             $this->registerHook('displayFooter')&&
-            $this->registerHook('displayFooterBefore');
+            $this->registerHook('displayFooterBefore')&&
+            $this->registerHook('displayProductListReviews')&&
+            $this->registerHook('header');
     }
 
     public function uninstall()
@@ -131,9 +133,7 @@ class Highlightingreduction extends Module
         if(Tools::isSubmit('savelist')){
             $this->postProcessDiscountPage();
         }
-        dump(Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_BY'));
-        dump(Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY'));
-        dump(Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL'));
+
         $this->context->controller->addCSS($this->_path.'views/css/back.css');
         $this->context->controller->addJS($this->_path.'views/js/back.js');
         $this->context->smarty->assign([
@@ -199,7 +199,17 @@ class Highlightingreduction extends Module
 
     }
 
+    public function hookDisplayProductListReviews($params){
+       /* if($params['product']->id==1){
+            if($params['product']['specific_prices']!=false){
+                dump($params['product']);
+            }
 
+        }*/
+        //$this->context->controller->php_self category, manufacturer index(home)
+        //dump($this->context->controller->php_self );
+        //return $this->renderCountdown($params['product']->id, $params['product']['specific_prices']);
+    }
     public function hookDisplayHome()
     {   
         return $this->displaySlider(0);
@@ -213,7 +223,7 @@ class Highlightingreduction extends Module
     {
         return $this->displaySlider(1);
     }     
-    private function getProductsToDisplay($orderBy="", $orderWay="ASC", $limit=0, $time="0", $interval=""){
+    public function getProductsToDisplay($orderBy="", $orderWay="ASC", $limit=0, $time="0", $interval=""){
         $sql = 'SELECT p.*, product_shop.*, pl.* , m.`name` AS manufacturer_name, s.`name` AS supplier_name, IF(sp.reduction<1, ROUND(product_shop.price*(1+(t.rate/100))*sp.reduction, 2), sp.reduction) as red
         FROM `' . _DB_PREFIX_ . 'product` p
         ' . Shop::addSqlAssociation('product', 'p') . '
@@ -247,12 +257,12 @@ class Highlightingreduction extends Module
         elseif($orderBy=="date_fin"){
             $sql.=" ORDER BY IF(sp.to='0000-00-00 00:00:00',1,0) ".$orderWay;
         }
-        elseif($orderBy!="0"){
+        elseif($orderBy!=""){
             $sql .=" ORDER BY ".$orderBy." ".$orderWay;
         }
         //limits include start???
         $sql .=($limit > 0 ? " LIMIT ".$limit : "");
-        echo $sql;
+        //echo $sql;
 
         $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql, true, false);
 
@@ -271,7 +281,7 @@ class Highlightingreduction extends Module
             return false;
         }
     }
-    private function displaySlider($value){
+    private function displaySlider($value){ 
         if($this->whereDisplaySlider($value)===true){
             $idLang=$this->context->language->id;
             $nb_product=(Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER')==0)? 60:Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER'); 
@@ -285,29 +295,7 @@ class Highlightingreduction extends Module
                 Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOURS'),
                 Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL'),
             );
-            $assembler = new ProductAssembler($this->context);
-
-            $presenterFactory = new ProductPresenterFactory($this->context);
-            $presentationSettings = $presenterFactory->getPresentationSettings();
-            $presenter = new ProductListingPresenter(
-                new ImageRetriever(
-                    $this->context->link
-                ),
-                $this->context->link,
-                new PriceFormatter(),
-                new ProductColorsRetriever(),
-                $this->context->getTranslator()
-            );
-    
-            $products_for_template = array();
-    
-            foreach ($products as $rawProduct) {
-                $products_for_template[] = $presenter->present(
-                    $presentationSettings,
-                    $assembler->assembleProduct($rawProduct),
-                    $this->context->language
-                );
-            }
+            $products_for_template = $this->assembleProducts($products);
             $nb_page=(int)ceil(sizeof($products)/$nb_par_page);
 
             $this->context->controller->addCSS($this->_path.'views/css/front.css');
@@ -318,8 +306,78 @@ class Highlightingreduction extends Module
                 'products' => $products_for_template,
                 'nb_par_page' =>$nb_par_page,
             ]);
-            dump($products_for_template);
             return $this->display(__FILE__, 'views/templates/front/hook/slider.tpl');
         }
+    }
+    public function assembleProducts($products){
+        $assembler = new ProductAssembler($this->context);
+
+        $presenterFactory = new ProductPresenterFactory($this->context);
+        $presentationSettings = $presenterFactory->getPresentationSettings();
+        $presenter = new ProductListingPresenter(
+            new ImageRetriever(
+                $this->context->link
+            ),
+            $this->context->link,
+            new PriceFormatter(),
+            new ProductColorsRetriever(),
+            $this->context->getTranslator()
+        );
+
+        $products_for_template = array();
+
+        foreach ($products as $rawProduct) {
+            $products_for_template[] = $presenter->present(
+                $presentationSettings,
+                $assembler->assembleProduct($rawProduct),
+                $this->context->language
+            );
+        }
+        return $products_for_template;
+    }
+    public function renderCountdown($idProduct, $specificPrice){
+        $html="";
+        if($idProduct){
+            if($specificPrice!=false && $specificPrice['to']!='0000-00-00 00:00:00'){
+                $datetime_current = new DateTime('now', new DateTimeZone('UTC'));
+                $datetime_to = new DateTime($specificPrice['to'], new DateTimeZone('UTC'));
+                $days_diff = abs($datetime_to->getTimestamp() - $datetime_current->getTimestamp()) / 60 / 60 / 24;
+              //  dump($specificPrice['to']);
+                //dump(($specificPrice['to'] ? strtotime($specificPrice['to'].' UTC') * 1000 : 0));
+                //dump($idProduct);
+                //dump($specificPrice['to']);
+                $this->context->smarty->assign(array(
+                    'pspc_theme' => '1-simple',
+                    'pspc_vertical_align' => 'bottom',
+                    'to_time' => ($specificPrice['to'] ? strtotime($specificPrice['to'].' UTC') * 1000 : 0),
+                    'name' => 'restant :',
+                    'id' => $idProduct
+                ));
+
+                $html = $this->display(
+                    __FILE__,
+                    'views/templates/front/hook/countdown.tpl'
+                );       
+            }
+        }
+
+        return $html;
+
+    }
+    public function hookHeader(){
+        // Register theme CSS
+        $this->context->smarty->assign(array(
+            'pspc_adjust_positions' => 1,     
+        ));
+        $this->context->controller->addCSS(
+            $this->_path . 'views/css/themes/' . '1-simple.css'
+        );
+        $this->context->controller->addJS(            array(
+            $this->_path . 'views/js/underscore.min.js',
+            $this->_path . 'views/js/jquery.countdown.min.js',));
+        return $this->display(
+            __FILE__,
+            'views/templates/front/hook/header.tpl'
+        ); 
     }
 }

@@ -1,0 +1,144 @@
+.psproductcountdown .pspc-count.pspc-curr,
+.psproductcountdown .pspc-count.pspc-bottom {
+    display: none;
+}
+
+.psproductcountdown {
+    padding-bottom: 5px;
+}
+
+.psproductcountdown .pspc_h,
+.psproductcountdown .pspc-offer-ends {
+    margin-bottom: 0;
+}
+
+.pspc-main .pspc-time {
+    margin: 0 1px 1.3em 1px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    height: 5em;
+    width: 23%;
+    max-width: 4em;
+}
+.pspc-main .seconds {
+    margin-right: 0;
+}
+.pspc-main .pspc-count {
+    background: rgba(214, 214, 214, 0.5);
+    color: #333333;
+    display: block;
+    font-family: 'Arial', sans-serif;
+    font-size: 2em;
+    line-height: 2.6em;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 0 15px #fff;
+    font-weight: normal;
+}
+#products .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product_list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#js-product-list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+.psproductcountdown .pspc-main .pspc-time .pspc-count {
+    color: #333333;
+    position: absolute;
+}
+.psproductcountdown .pspc-main .pspc-highlight .pspc-count {
+    color: #f13340 !important;
+}
+.pspc-main .pspc-label {
+    font-size: 1em;
+    margin-top: 5px;
+    display: block;
+    position: absolute;
+    top: 5em;
+    width: 100%;
+    color: #202020;
+    padding: 0;
+    font-weight: normal;
+    text-align: center;
+}
+.psproductcountdown.pspc-hide-promo-text {
+    padding-top: 5px;
+}
+
+/* Compact view: */
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main {
+    margin-bottom: 0;
+}
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main .pspc-offer-ends {
+    margin-bottom: 0;
+}
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main .pspc-time {
+    height: 4.2em;
+}
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main .pspc-label {
+    top: 2.5em;
+}
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main .pspc-count {
+    line-height: 1.9em;
+    padding-bottom: 0.5em;
+}
+.psproductcountdown.pspc-1-simple.compact_view .pspc-main .pspc-time {
+    margin-bottom: 0.7em;
+}
+
+body .psproductcountdown {
+    font-size: 100%;
+}
+body .product_list .psproductcountdown,
+body #product_list .psproductcountdown,
+body .ajax_block_product .psproductcountdown,
+body .product-miniature .psproductcountdown {
+    font-size: 100%;
+}
+body #left_column .psproductcountdown, body #right_column .psproductcountdown {
+    font-size: 80%;
+}
+.psproductcountdown .pspc_h,
+.psproductcountdown .pspc-offer-ends {
+    display: block;
+}
+#products .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product_list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#js-product-list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#products .psproductcountdown .pspc-main .pspc-time .pspc-count,
+.psproductcountdown .pspc-main .pspc-time .pspc-count {
+    background: rgba(214, 214, 214, 0.7);
+    color: #333333;
+}
+#products .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#product_list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#js-product-list .psproductcountdown .pspc-main .pspc-time .pspc-count,
+#products .psproductcountdown .pspc-main .pspc-time .pspc-count,
+.psproductcountdown .pspc-main .pspc-time .pspc-count,
+body .psproductcountdown.pspc-show-colon .pspc-main .pspc-count:after {
+    color: #333333;
+}
+body .psproductcountdown .pspc-main .pspc-highlight .pspc-count {
+    color: #f13340;
+}
+body .pspc-offer-ends,
+.psproductcountdown.pspc-long .pspc-main {
+    color: #232323;
+}
+body .pspc-main .pspc-label {
+    color: #202020;
+}
+body .product_list .psproductcountdown,
+body #product_list .psproductcountdown,
+body .ajax_block_product .psproductcountdown,
+body .product-miniature .psproductcountdown,
+#product .product_list .psproductcountdown,
+#product #product_list .psproductcountdown,
+#product .ajax_block_product .psproductcountdown,
+#product .product-miniature .psproductcountdown {
+    background-color: rgba(255, 255, 255, 0.8);
+}
