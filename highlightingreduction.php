@@ -63,12 +63,6 @@ class Highlightingreduction extends Module
      */
     public function install()
     {
-        /**GENERAL TAB DATA**/
-        //object
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_OBJECT', 1);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE', 0);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION', 0);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE', 0);
         
         /**SLIDER TAB DATA**/
         //page with all product with a reduction
@@ -80,15 +74,25 @@ class Highlightingreduction extends Module
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL', "DAY");
         Configuration::updateValue('HIGHLIGHTINGREDUCITON_SLIDER_ORDER_BY','0');
-        Configuration::updateValue('HIGHLIGHTLINGREDUCTION_SLIDER_ORDER_WAY','ASC');
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY','ASC');
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_TITLE', 'TRENDING PRODUCTS');
         
-        /**PRODUCT LIST TAB DATA**/
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE', 0);
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', 0);
+        /**COUNTDOWN TAB DATA**/
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_ACTIVATE', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_OBJECT', "1-simple");
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_ALL', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_C', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_P', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_B', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_TEXT', "Restant:");
+        
+        /** PRODUCT TAB DATA**/
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_ACTIVATE', 0);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_POSITION', 1);
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_TEXT', "Restant :");
 
         return parent::install() &&
             $this->registerHook('displayHome')&&
-            $this->registerHook('displayFooter')&&
             $this->registerHook('displayFooterBefore')&&
             $this->registerHook('displayProductListReviews')&&
             $this->registerHook('header');
@@ -96,11 +100,7 @@ class Highlightingreduction extends Module
 
     public function uninstall()
     {
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_OBJECT');
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE');
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION');
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE');
-        
+
         /**SLIDER TAB DATA**/
         //page with all product with a reduction
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER');
@@ -112,10 +112,21 @@ class Highlightingreduction extends Module
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL');
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_BY');
         Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_SLIDER_TITLE');
         
-        /**PRODUCT LIST TAB DATA**/
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE');
-        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS');
+        /**COUNTDOWN TAB DATA**/
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_ACTIVATE');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_OBJECT');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_D_ALL');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_D_C');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_D_P');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_D_B');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_C_TEXT');
+        
+        /** PRODUCT TAB DATA**/
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_P_ACTIVATE');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_P_POSITION');
+        Configuration::deleteByName('HIGHLIGHTINGREDUCTION_P_TEXT');
         return parent::uninstall();
     }
 
@@ -124,25 +135,20 @@ class Highlightingreduction extends Module
      */
     public function getContent()
     {
-        if(Tools::isSubmit('saveconfiguration')){
-            $this->postProcessGeneral();
-        }
         if(Tools::isSubmit('saveslider')){
             $this->postProcessSlider();
         }
-        if(Tools::isSubmit('savelist')){
-            $this->postProcessDiscountPage();
+        if(Tools::isSubmit('saveproduct')){
+            $this->postProcessProduct();
         }
 
+        if(Tools::isSubmit('savecountdown')){
+            $this->postProcessCountdown();
+        }
         $this->context->controller->addCSS($this->_path.'views/css/back.css');
         $this->context->controller->addJS($this->_path.'views/js/back.js');
         $this->context->smarty->assign([
-            'object' =>Configuration::get('HIGHLIGHTINGREDUCTION_OBJECT'),
-            'product_page' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE'),
-            'product_page_position' =>Configuration::get('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION'),
-            'category_page' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE'),
-            'slider_activate' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER'),
-
+            'SLIDER_ACTIVATE' => Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER'),
             'slider_hook_position' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION'),
             'slider_product_per_row' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW'),
             'slider_product_row' =>Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW'),
@@ -151,9 +157,21 @@ class Highlightingreduction extends Module
             'SLIDER_ORDER_BY' => Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_BY'),
             'SLIDER_ORDER_WAY' => Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY'),
             'SLIDER_DISCOUNT_END_INTERVAL' => Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL'),
+            'SLIDER_TITLE' => Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_TITLE'),
 
-            'page_activate' =>Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE'),
-            'page_discount_end' =>Configuration::get('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS'),
+            'C_ACTIVATE' => (int)Configuration::get('HIGHLIGHTINGREDUCTION_C_ACTIVATE'),
+            'C_STYLE' => Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT'),
+            'C_D_ALL' => Configuration::get('HIGHLIGHTINGREDUCTION_C_D_ALL'),
+            'C_D_C' => Configuration::get('HIGHLIGHTINGREDUCTION_C_D_C'),
+            'C_D_P' => Configuration::get('HIGHLIGHTINGREDUCTION_C_D_P'),
+            'C_D_B' => Configuration::get('HIGHLIGHTINGREDUCTION_C_D_B'),
+            'C_TEXT' => Configuration::get('HIGHLIGHTINGREDUCTION_C_TEXT'),
+
+            'P_ACTIVATE' => Configuration::get('HIGHLIGHTINGREDUCTION_P_ACTIVATE'),
+            'P_POSITION' => Configuration::get('HIGHLIGHTINGREDUCTION_P_POSITION'),
+            'P_TEXT' => Configuration::get('HIGHLIGHTINGREDUCTION_P_TEXT'),
+
+            'promo_page' => $this->context->link->getPageLink('prices-drop'),
             
         ]);
 
@@ -161,22 +179,14 @@ class Highlightingreduction extends Module
     }
 
 
-    /**
-     * Save form data.
-     */
-    protected function postProcessGeneral()
-    {
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_OBJECT', Tools::getValue('object_style'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_PRODUCT_PAGE', Tools::getValue('ACTIVATE_PRODUCT_PAGE'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_PRODUCT_PAGE_POSITION', Tools::getValue('PRODUCT_PAGE_POSITION'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVE_CATEGORY_PAGE', Tools::getValue('ACTIVATE_CATEGORY_LIST'));
-    }
+
     /**
      * Save form data.
      */
     protected function postProcessSlider()
     {
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', Tools::getValue('ACTIVATE_SLIDER'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_TITLE', Tools::getValue('SLIDER_TITLE'));
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', Tools::getValue('PRODUCT_SLIDER_POSITION'));
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', Tools::getValue('PRODUCT_PER_ROW'));
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', Tools::getValue('ROW_NUMBER'));
@@ -189,16 +199,22 @@ class Highlightingreduction extends Module
 
         
     }
-    /**
-     * Save form data.
-     */
-    protected function postProcessDiscountPage()
+
+    protected function postProcessProduct()
     {
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_PAGE', Tools::getValue('ACTIVATE_DISCOUNT_PAGE'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_DISCOUNT_HOURS', intval(Tools::getValue('PAGE_DISCOUNT_END')));
-
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_ACTIVATE', Tools::getValue('P_ACTIVATE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_POSITION', Tools::getValue('C_P_POSITION'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_TEXT', Tools::getValue('C_P_TEXT'));
     }
-
+    protected function postProcessCountdown(){
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_ACTIVATE', (int)Tools::getValue('ACTIVATE_COUNTDOWN'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_OBJECT', Tools::getValue('object_style'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_ALL', (int)Tools::getValue('COUNTDOWN_DISPLAY_EVERYWHERE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_C', (int)Tools::getValue('COUNTDOWN_DISPLAY_CATEGORY'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_P', (int)Tools::getValue('COUNTDOWN_DISPLAY_PROMO'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_B', (int)Tools::getValue('COUNTDOWN_DISPLAY_BRAND'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_TEXT', Tools::getValue('COUNTDOWN_TEXT'));
+    }
     public function hookDisplayProductListReviews($params){
        /* if($params['product']->id==1){
             if($params['product']['specific_prices']!=false){
@@ -208,17 +224,13 @@ class Highlightingreduction extends Module
         }*/
         //$this->context->controller->php_self category, manufacturer index(home)
         //dump($this->context->controller->php_self );
-        //return $this->renderCountdown($params['product']->id, $params['product']['specific_prices']);
+        return $this->renderCountdown($params['product']->id, $params['product']['specific_prices']);
     }
     public function hookDisplayHome()
     {   
         return $this->displaySlider(0);
 
     }    
-    public function hookDisplayFooter()
-    {
-        /* Place your code here. */
-    }
     public function hookDisplayFooterBefore()
     {
         return $this->displaySlider(1);
@@ -298,13 +310,17 @@ class Highlightingreduction extends Module
             $products_for_template = $this->assembleProducts($products);
             $nb_page=(int)ceil(sizeof($products)/$nb_par_page);
 
+            ((int)Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW')==3 ? $style="width: 33% !important;":$style="");
+
             $this->context->controller->addCSS($this->_path.'views/css/front.css');
             $this->context->controller->addJS($this->_path.'views/js/front.js');
             $this->context->smarty->assign([
                 'nbpage' => $nb_page,
                 'nbproduct' => sizeof($products),
                 'products' => $products_for_template,
-                'nb_par_page' =>$nb_par_page,
+                'nb_par_page' => $nb_par_page,
+                "style" => $style,
+                "title" => Configuration::get('HIGHLIGHTINGREDUCTION_SLIDER_TITLE'),
             ]);
             return $this->display(__FILE__, 'views/templates/front/hook/slider.tpl');
         }
