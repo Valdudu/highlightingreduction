@@ -73,7 +73,7 @@ class Highlightingreduction extends Module
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', 0);
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL', "DAY");
-        Configuration::updateValue('HIGHLIGHTINGREDUCITON_SLIDER_ORDER_BY','0');
+        Configuration::updateValue('HIGHLIGHTINGREDUCITON_SLIDER_ORDER_BY','');
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY','ASC');
         Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_TITLE', 'TRENDING PRODUCTS');
         
@@ -232,16 +232,15 @@ class Highlightingreduction extends Module
     }  
     public function hookDisplayProductButtons($param){
        // dump($param);
-       dump($param['product']->id_product_attribute);
-        return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+        //return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
 
     }  
     public function hookDisplayProductPriceBlock($param){
         //dump($param);
         //dump($param['product']['specific_prices']);
-        /*if($param['type']=="old_price"){
+        if($param['type']=="old_price"){
             return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
-        }*/
+        }
         //
     }  
     public function getProductsToDisplay($orderBy="", $orderWay="ASC", $limit=0, $time="0", $interval=""){

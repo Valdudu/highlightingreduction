@@ -105,7 +105,7 @@
                 </label>
                 <div class="col-lg-9">
                     <select name="SLIDER_ORDER_BY" class="short-select">
-                        <option value="0" {if $SLIDER_ORDER_BY=="0"}selected{/if}>{l s='Nothing selected' mod='productpricebrand'}</option>
+                        <option value="" {if $SLIDER_ORDER_BY==""}selected{/if}>{l s='Nothing selected' mod='productpricebrand'}</option>
                         <option value="pl.name" {if $SLIDER_ORDER_BY=="pl.name"}selected{/if}>{l s='Name' mod='productpricebrand'}</option>
                         <option value="product_shop.price" {if $SLIDER_ORDER_BY=="product_shop.price"}selected{/if}>{l s='Product price' mod='productpricebrand'}</option>
                         <option value="red"{if $SLIDER_ORDER_BY=="red"}selected{/if}>{l s='Reduction value' mod='productpricebrand'}</option>	
