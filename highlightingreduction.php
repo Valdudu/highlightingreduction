@@ -361,15 +361,11 @@ class Highlightingreduction extends Module
                 $datetime_current = new DateTime('now', new DateTimeZone('UTC'));
                 $datetime_to = new DateTime($specificPrice['to'], new DateTimeZone('UTC'));
                 $days_diff = abs($datetime_to->getTimestamp() - $datetime_current->getTimestamp()) / 60 / 60 / 24;
-              //  dump($specificPrice['to']);
-                //dump(($specificPrice['to'] ? strtotime($specificPrice['to'].' UTC') * 1000 : 0));
-                //dump($idProduct);
-                //dump($specificPrice['to']);
                 $this->context->smarty->assign(array(
-                    'pspc_theme' => '1-simple',
+                    //'pspc_theme' => Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT'),
                     'pspc_vertical_align' => 'bottom',
                     'to_time' => ($specificPrice['to'] ? strtotime($specificPrice['to'].' UTC') * 1000 : 0),
-                    'name' => 'restant :',
+                    'name' => Configuration::get('HIGHLIGHTINGREDUCTION_C_TEXT'),
                     'id' => $idProduct
                 ));
 
@@ -389,7 +385,7 @@ class Highlightingreduction extends Module
             'pspc_adjust_positions' => 1,     
         ));
         $this->context->controller->addCSS(array(
-            $this->_path . 'views/css/themes/' . '1-simple.css',
+            $this->_path . 'views/css/themes/' . Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT').'.css',
             $this->_path.'views/css/front.css')
         );
  

@@ -10,8 +10,7 @@
 * @license   LICENSE.txt
 *}
 <div class="pspc-wrp pspc-wrp-over-img pspc-valign-{$pspc_vertical_align|escape:'quotes':'UTF-8'}">
-    <div class="psproductcountdown pspc-inactive compact_view
-        pspc-{$pspc_theme|escape:'quotes':'UTF-8'}"
+    <div class="psproductcountdown pspc-inactive compact_view"
          data-to="{$to_time|escape:'html':'UTF-8'}"
          data-name="{if $name}{$name|escape:'html':'UTF-8'}{else}{l s='Offer ends in:' mod='psproductcountdown'}{/if}"
          data-id-countdown="{$id|intval}"
