@@ -23,7 +23,6 @@
     var pspc_highlight = "seconds";
     var pspc_position_list = "over_img";
     var pspc_adjust_positions = 1;
-    var pspc_token = "f5099de2b4158e09062fe5d8178f6f01";
   //  var pspc_token = "{Tools::getToken(false)|escape:'html':'UTF-8'}";
 </script>
 

@@ -96,7 +96,9 @@ class Highlightingreduction extends Module
             $this->registerHook('displayHome')&&
             $this->registerHook('displayFooterBefore')&&
             $this->registerHook('displayProductListReviews')&&
-            $this->registerHook('header');
+            $this->registerHook('header')&&
+            $this->registerHook('displayProductButtons')&&
+            $this->registerHook('displayProductPriceBlock');
     }
 
     public function uninstall()
@@ -183,38 +185,7 @@ class Highlightingreduction extends Module
     /**
      * Save form data.
      */
-    protected function postProcessSlider()
-    {
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', Tools::getValue('ACTIVATE_SLIDER'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_TITLE', Tools::getValue('SLIDER_TITLE'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', Tools::getValue('PRODUCT_SLIDER_POSITION'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', Tools::getValue('PRODUCT_PER_ROW'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', Tools::getValue('ROW_NUMBER'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', intval(Tools::getValue('SLIDER_MAX_PRODUCT')));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', intval(Tools::getValue('SLIDER_DISCOUNT_END')));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_BY', Tools::getValue('SLIDER_ORDER_BY'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY', Tools::getValue('SLIDER_ORDER_WAY'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL', Tools::getValue('SLIDER_DISCOUNT_END_INTERVAL'));
 
-
-        
-    }
-    protected function postProcessProduct()
-    {
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_ACTIVATE', Tools::getValue('P_ACTIVATE'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_POSITION', Tools::getValue('C_P_POSITION'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_TEXT', Tools::getValue('C_P_TEXT'));
-    }
-    protected function postProcessCountdown(){
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_ACTIVATE', (int)Tools::getValue('ACTIVATE_COUNTDOWN'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_OBJECT', Tools::getValue('object_style'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_ALL', (int)Tools::getValue('COUNTDOWN_DISPLAY_EVERYWHERE'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_C', (int)Tools::getValue('COUNTDOWN_DISPLAY_CATEGORY'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_P', (int)Tools::getValue('COUNTDOWN_DISPLAY_PROMO'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_B', (int)Tools::getValue('COUNTDOWN_DISPLAY_BRAND'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_I', (int)Tools::getValue('COUNTDOWN_DISPLAY_INDEX'));
-        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_TEXT', Tools::getValue('COUNTDOWN_TEXT'));
-    }
     public function hookDisplayProductListReviews($params){
         $self=$this->context->controller->php_self;
         if(COnfiguration::get('HIGHLIGHTINGREDUCTION_C_ACTIVATE')==1){
@@ -236,7 +207,43 @@ class Highlightingreduction extends Module
     public function hookDisplayFooterBefore()
     {
         return $this->displaySlider(1);
-    }     
+    }    
+    public function hookHeader(){
+        // Register theme CSS
+        $this->context->smarty->assign(array(
+            'pspc_adjust_positions' => 1,     
+        ));
+        $this->context->controller->addCSS(array(
+            $this->_path . 'views/css/themes/' . Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT').'.css',
+            $this->_path.'views/css/front.css')
+        );
+ 
+
+        $this->context->controller->addJS(            array(
+            $this->_path . 'views/js/underscore.min.js',
+            $this->_path . 'views/js/jquery.countdown.min.js',
+            $this->_path.'views/js/front.js',
+            (Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER')==1 ? $this->_path.'views/js/slider.js':""),
+        ));
+        return $this->display(
+            __FILE__,
+            'views/templates/front/hook/header.tpl'
+        ); 
+    }  
+    public function hookDisplayProductButtons($param){
+       // dump($param);
+       dump($param['product']->id_product_attribute);
+        return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+
+    }  
+    public function hookDisplayProductPriceBlock($param){
+        //dump($param);
+        //dump($param['product']['specific_prices']);
+        /*if($param['type']=="old_price"){
+            return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+        }*/
+        //
+    }  
     public function getProductsToDisplay($orderBy="", $orderWay="ASC", $limit=0, $time="0", $interval=""){
         $sql = 'SELECT p.*, product_shop.*, pl.* , m.`name` AS manufacturer_name, s.`name` AS supplier_name, IF(sp.reduction<1, ROUND(product_shop.price*(1+(t.rate/100))*sp.reduction, 2), sp.reduction) as red
         FROM `' . _DB_PREFIX_ . 'product` p
@@ -371,34 +378,43 @@ class Highlightingreduction extends Module
 
                 $html = $this->display(
                     __FILE__,
-                    'views/templates/front/hook/countdown.tpl'
+                    'views/templates/front/hook/countdown.tpl',                   
                 );       
             }
         }
-
         return $html;
 
     }
-    public function hookHeader(){
-        // Register theme CSS
-        $this->context->smarty->assign(array(
-            'pspc_adjust_positions' => 1,     
-        ));
-        $this->context->controller->addCSS(array(
-            $this->_path . 'views/css/themes/' . Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT').'.css',
-            $this->_path.'views/css/front.css')
-        );
- 
+    protected function postProcessSlider()
+    {
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER', Tools::getValue('ACTIVATE_SLIDER'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_TITLE', Tools::getValue('SLIDER_TITLE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOOK_POSITION', Tools::getValue('PRODUCT_SLIDER_POSITION'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_PER_ROW', Tools::getValue('PRODUCT_PER_ROW'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_ROW', Tools::getValue('ROW_NUMBER'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_PRODUCT_NUMBER', intval(Tools::getValue('SLIDER_MAX_PRODUCT')));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS', intval(Tools::getValue('SLIDER_DISCOUNT_END')));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_BY', Tools::getValue('SLIDER_ORDER_BY'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_ORDER_WAY', Tools::getValue('SLIDER_ORDER_WAY'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_SLIDER_HOURS_INTERVAL', Tools::getValue('SLIDER_DISCOUNT_END_INTERVAL'));
 
-        $this->context->controller->addJS(            array(
-            $this->_path . 'views/js/underscore.min.js',
-            $this->_path . 'views/js/jquery.countdown.min.js',
-            $this->_path.'views/js/front.js',
-            (Configuration::get('HIGHLIGHTINGREDUCTION_ACTIVATE_SLIDER')==1 ? $this->_path.'views/js/slider.js':""),
-        ));
-        return $this->display(
-            __FILE__,
-            'views/templates/front/hook/header.tpl'
-        ); 
+
+        
+    }
+    protected function postProcessProduct()
+    {
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_ACTIVATE', Tools::getValue('P_ACTIVATE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_POSITION', Tools::getValue('C_P_POSITION'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_P_TEXT', Tools::getValue('C_P_TEXT'));
+    }
+    protected function postProcessCountdown(){
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_ACTIVATE', (int)Tools::getValue('ACTIVATE_COUNTDOWN'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_OBJECT', Tools::getValue('object_style'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_ALL', (int)Tools::getValue('COUNTDOWN_DISPLAY_EVERYWHERE'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_C', (int)Tools::getValue('COUNTDOWN_DISPLAY_CATEGORY'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_P', (int)Tools::getValue('COUNTDOWN_DISPLAY_PROMO'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_B', (int)Tools::getValue('COUNTDOWN_DISPLAY_BRAND'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_D_I', (int)Tools::getValue('COUNTDOWN_DISPLAY_INDEX'));
+        Configuration::updateValue('HIGHLIGHTINGREDUCTION_C_TEXT', Tools::getValue('COUNTDOWN_TEXT'));
     }
 }
