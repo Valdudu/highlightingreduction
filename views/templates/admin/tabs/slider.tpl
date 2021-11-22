@@ -11,17 +11,26 @@
                 </label>
                 <div class="col-lg-9">
                     <span class="switch prestashop-switch fixed-width-lg">
-                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_on" value="1" {if $slider_activate==1}checked="checked"{/if}>
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_on" value="1" {if $SLIDER_ACTIVATE==1}checked="checked"{/if}>
                         <label for="ACTIVATE_SLIDE_on">
                             Oui
                         </label>
-                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_off" value="0"{if $slider_activate==0}checked="checked"{/if}>
+                        <input type="radio" name="ACTIVATE_SLIDER" id="ACTIVATE_SLIDE_off" value="0"{if $SLIDER_ACTIVATE==0}checked="checked"{/if}>
                         <label for="ACTIVATE_SLIDE_off">
                             Non
                         </label>
                         <a class="slide-button btn"></a>
                     </span>
                 </div>                              
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-lg-3">
+                    {l s='Slider title' mod='productpricebrand'}
+                </label>
+                <div class="col-lg-9">
+                    <input type="text" value="{$SLIDER_TITLE}" name="SLIDER_TITLE" class="short-select">
+                </div>
             </div>
 
             <div class="form-group">
@@ -106,7 +115,7 @@
                 </div> 
             </div>
 
-            <div class="form-group">
+            <div class="form-group way">
                 <label class="control-label col-lg-3">
                     <span class="label-tool-tip" data-toggle="tooltip" data-html="true" title="" data-original-title="">
                         {l s='Randomly display products' mod='productpricebrand'}

@@ -48,3 +48,8 @@
 .smaller-select{
     width: 100px !important;
 }
+.alert-primary{
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}

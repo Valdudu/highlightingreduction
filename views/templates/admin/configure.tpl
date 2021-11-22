@@ -27,16 +27,18 @@
     <div class="page-head custom-tab">
         <div class="page-head-tabs" id="head_tabs">
             <ul class="nav">
-                <li class="active">
-                    <a href="#general" data-toggle="tab">{l s='GENERAL CONFIGURATION' mod='productpricebrand'}</a>
-                </li>
-				<li >
+				<li class="active">
                     <a href="#slider_configure" data-toggle="tab">{l s='SLIDER CONFIGURE' mod='productpricebrand'}</a>
                 </li>
                 <li >
-                    <a href="#product_list_configure" data-toggle="tab">{l s='PRODUCT LIST' mod='productpricebrand'}</a>
+                    <a href="#countdown_configure" data-toggle="tab">{l s='TIMER' mod='productpricebrand'}</a>
+                </li>                
+                <li >
+                    <a href="#product_configure" data-toggle="tab">{l s='PRODUCT PAGE' mod='productpricebrand'}</a>
                 </li>
-               
+                <li >
+                    <a href="#product_list_configure" data-toggle="tab">{l s='PRODUCT LIST' mod='productpricebrand'}</a>
+                </li>               
             </ul>
         </div>
     </div>
@@ -46,21 +48,27 @@
     <div id="modulecontent" class="clearfix">
         <!-- Tab panes -->
         <div class="tab-content row">
-            <div class="tab-pane active" id="general">
-                <div class="tab_cap_listing">
-                    {include file="./tabs/general.tpl"}
-                </div>
-            </div>            
-			<div class="tab-pane" id="slider_configure">
+            
+			<div class="tab-pane active" id="slider_configure">
                 <div class="tab_cap_listing">
                     {include file="./tabs/slider.tpl"}
                 </div>
             </div>
+            <div class="tab-pane" id="countdown_configure">
+                <div class="tab_cap_listing">
+                    {include file="./tabs/countdown.tpl"}
+                </div>
+            </div>
+            <div class="tab-pane" id="product_configure">
+                <div class="tab_cap_listing">
+                    {include file="./tabs/product.tpl"}
+                </div>
+            </div>            
             <div class="tab-pane" id="product_list_configure">
                 <div class="tab_cap_listing">
                     {include file="./tabs/product_list.tpl"}
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 </div>

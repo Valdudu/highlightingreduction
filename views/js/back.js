@@ -35,5 +35,20 @@ $(document).ready(function(){
             $(".select_product_position").css("visibility", "hidden");            
         }
     });
+    $("select[name='SLIDER_ORDER_BY']").click(function(){
+        if($("select[name='SLIDER_ORDER_BY']").val()=="random"){
+            $(".way").css("visibility", "hidden");
+        }else{
+            $(".way").css("visibility", "visible");            
 
+        }
+    });
+    $("input[name='COUNTDOWN_DISPLAY_EVERYWHERE']").click(function(){
+        if($("input[name='COUNTDOWN_DISPLAY_EVERYWHERE']:checked").val()==0){
+            $(".display").css("visibility", "visible"); 
+        }else{
+            $(".display").css("visibility", "hidden");             
+        }
+    });
+    
 });
