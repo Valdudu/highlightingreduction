@@ -221,7 +221,8 @@ class Highlightingreduction extends Module
             if(Configuration::get('HIGHLIGHTINGREDUCTION_C_D_ALL')==1 || 
             ($self=="category" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_C') == 1) ||
             ($self=="manufacturer" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_B')== 1) ||
-            ($self=="prices-drop" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_P') == 1)){
+            ($self=="prices-drop" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_P') == 1) || 
+            ($self=="index" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_I'))){
                 return $this->renderCountdown($params['product']->id, $params['product']['specific_prices']);
             }
         }

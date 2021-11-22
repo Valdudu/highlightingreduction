@@ -118,7 +118,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-lg-3">
-                        {l s='Brands pages' mod='productpricebrand'}
+                        {l s='Home Page' mod='productpricebrand'}
                     </label>
                     <div class="col-lg-9">
                         <span class="switch prestashop-switch fixed-width-lg">
