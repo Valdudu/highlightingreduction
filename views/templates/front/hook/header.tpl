@@ -15,7 +15,7 @@
   //  var pspc_offer_txt = "{l s='Offer ends in:' mod='psproductcountdown'}";
     var pspc_position_product = "displayProductPriceBlock";
     var pspc_position_list = "over_img";
-    var pspc_adjust_positions = {$pspc_adjust_positions|intval};
+   // var pspc_adjust_positions = {$pspc_adjust_positions|intval};
     var pspc_offer_txt = "Restant :";
     var pspc_psv = 1.7;
     var pspc_hide_after_end = 1;

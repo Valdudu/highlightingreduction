@@ -231,15 +231,17 @@ class Highlightingreduction extends Module
         ); 
     }  
     public function hookDisplayProductButtons($param){
-       // dump($param);
-        //return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+        return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+
 
     }  
     public function hookDisplayProductPriceBlock($param){
         //dump($param);
         //dump($param['product']['specific_prices']);
-        if($param['type']=="old_price"){
-            return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+        if($this->context->controller->php_self=="product"){
+            if($param['type']=="old_price"){
+                return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+            }
         }
         //
     }  

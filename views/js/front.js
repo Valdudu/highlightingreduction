@@ -26,6 +26,7 @@
 * to avoid any conflicts with others containers.
 */
 
+
  if (typeof updateDisplay === 'function') {
   var updateDisplay_pspc_original = updateDisplay;
   updateDisplay = function () {
