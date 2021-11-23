@@ -27,7 +27,7 @@
 */
 
 
- if (typeof updateDisplay === 'function') {
+if (typeof updateDisplay === 'function') {
   var updateDisplay_pspc_original = updateDisplay;
   updateDisplay = function () {
       updateDisplay_pspc_original();
@@ -200,6 +200,8 @@ function dateStringToTimestamp(dateString) {
 }
 
 function pspc_refreshProductTimers() {
+        alert('');
+
   var id_pa = $('#idCombination').val();
   $('.pspc-combi-wrp').hide().addClass('pspc-cw-hide');
   if (id_pa) {

@@ -27,7 +27,7 @@
 			<a class="carousel-control right" onclick="plusSlides(1)">
 				<i id="controlClick">&#10095;</i>
 			</a>
-			<div style="text-align:center">
+			<div class="tt" style="text-align:center">
 				{for $iteration=1 to $nbpage}
 					<span class="dot" onclick="currentSlide({$iteration})"></span> 
 				{/for}

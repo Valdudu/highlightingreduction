@@ -194,7 +194,7 @@ class Highlightingreduction extends Module
             ($self=="manufacturer" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_B')== 1) ||
             ($self=="prices-drop" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_P') == 1) || 
             ($self=="index" && Configuration::get('HIGHLIGHTINGREDUCTION_C_D_I'))){
-                return $this->renderCountdown($params['product']->id, $params['product']['specific_prices']);
+                return $this->renderCountdown($params['product']->id, $params['product']['specific_prices'], Configuration::get('HIGHLIGHTINGREDUCTION_C_TEXT'));
             }
         }
         
@@ -219,7 +219,8 @@ class Highlightingreduction extends Module
         );
  
 
-        $this->context->controller->addJS(            array(
+        $this->context->controller->addJS(            
+            array(
             $this->_path . 'views/js/underscore.min.js',
             $this->_path . 'views/js/jquery.countdown.min.js',
             $this->_path.'views/js/front.js',
@@ -231,19 +232,25 @@ class Highlightingreduction extends Module
         ); 
     }  
     public function hookDisplayProductButtons($param){
-        return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
-
-
+        if(Configuration::get('HIGHLIGHTINGREDUCTION_P_ACTIVATE')==1 && 
+        Configuration::get('HIGHLIGHTINGREDUCTION_P_POSITION')==2){
+            dump('okButton');
+            return $this->renderCountdown($param['product']->id, $param['product']['specific_prices'], Configuration::get('HIGHLIGHTINGREDUCTION_P_TEXT'));
+        }      
     }  
     public function hookDisplayProductPriceBlock($param){
         //dump($param);
         //dump($param['product']['specific_prices']);
         if($this->context->controller->php_self=="product"){
             if($param['type']=="old_price"){
-                return $this->renderCountdown($param['product']->id, $param['product']['specific_prices']);
+                if(Configuration::get('HIGHLIGHTINGREDUCTION_P_ACTIVATE')==1 && 
+                Configuration::get('HIGHLIGHTINGREDUCTION_P_POSITION')==1){
+                    dump('okPrice');
+                    return $this->renderCountdown($param['product']->id, $param['product']['specific_prices'], Configuration::get('HIGHLIGHTINGREDUCTION_P_TEXT'));
+                }
             }
         }
-        //
+        
     }  
     public function getProductsToDisplay($orderBy="", $orderWay="ASC", $limit=0, $time="0", $interval=""){
         $sql = 'SELECT p.*, product_shop.*, pl.* , m.`name` AS manufacturer_name, s.`name` AS supplier_name, IF(sp.reduction<1, ROUND(product_shop.price*(1+(t.rate/100))*sp.reduction, 2), sp.reduction) as red
@@ -362,7 +369,7 @@ class Highlightingreduction extends Module
         }
         return $products_for_template;
     }
-    public function renderCountdown($idProduct, $specificPrice){
+    public function renderCountdown($idProduct, $specificPrice, $txt){
         $html="";
         if($idProduct){
             if($specificPrice!=false && $specificPrice['to']!='0000-00-00 00:00:00'){
@@ -373,10 +380,10 @@ class Highlightingreduction extends Module
                     //'pspc_theme' => Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT'),
                     'pspc_vertical_align' => 'bottom',
                     'to_time' => ($specificPrice['to'] ? strtotime($specificPrice['to'].' UTC') * 1000 : 0),
-                    'name' => Configuration::get('HIGHLIGHTINGREDUCTION_C_TEXT'),
-                    'id' => $idProduct
+                    'name' => $txt,
+                    'id' => $idProduct, 
+                    'theme' => Configuration::get('HIGHLIGHTINGREDUCTION_C_OBJECT')
                 ));
-
                 $html = $this->display(
                     __FILE__,
                     'views/templates/front/hook/countdown.tpl',                   
